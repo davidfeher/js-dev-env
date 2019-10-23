@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "description": "JavaScript development environment",
   "scripts": {
-    "prestart": "babel-node buildScripts/startMessage.js",
-    "start": "npm-run-all --parallel open:src",
-    "open:src": "nodemon buildScripts/srcServer.js"
+    "build": "npx babel buildScripts/srcServer.js -d dist",
+    "prestart": "node buildScripts/startMessage.js",
+    "start": "npm run build && nodemon dist/srcServer.js"
   },
   "author": "David Feher",
   "license": "MIT",
@@ -13,11 +13,12 @@
     "whatwg-fetch": "1.0.0"
   },
   "devDependencies": {
-    "babel-cli": "6.16.0",
-    "babel-core": "6.17.0",
-    "babel-loader": "6.2.5",
-    "babel-preset-latest": "6.16.0",
-    "babel-register": "6.16.3",
+    "@babel/cli": "^7.6.4",
+    "@babel/core": "^7.6.4",
+    "@babel/preset-env": "^7.6.3",
+    "babel-preset-env": "1.7.0",
+    "babel-loader": "8.0.6",
+    "babel-register": "6.26.0",
     "braces": "3.0.2",
     "chai": "3.5.0",
     "chalk": "1.1.3",
@@ -44,8 +45,9 @@
     "style-loader": "0.13.1",
     "surge": "0.20.4",
     "webpack": "^4.41.2",
-    "webpack-dev-middleware": "1.8.4",
-    "webpack-hot-middleware": "2.13.0",
+    "webpack-cli": "3.3.9",
+    "webpack-dev-middleware": "3.7.2",
+    "webpack-hot-middleware": "2.25.0",
     "webpack-md5-hash": "0.0.5"
   }
 }
