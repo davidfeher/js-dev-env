@@ -1,7 +1,7 @@
 const path = require('path');
 
 module.exports = {
-  mode: "production", // "production" | "development" | "none"
+  mode: "development", // "production" | "development" | "none"
   // Chosen mode tells webpack to use its built-in optimizations accordingly.
   entry: path.resolve(__dirname, 'src/index'), // string | object | array
   // defaults to ./src
@@ -52,19 +52,11 @@ module.exports = {
           }
         ]
       },
-      { oneOf: [  ] },
-      // only use one of these nested rules
-      { rules: [  ] },
-      // use all of these nested rules (combine with conditions to be useful)
-      { resource: { and: [  ] } },
-      // matches only if all conditions are matched
-      { resource: { or: [  ] } },
-      { resource: [ ] },
-      // matches if any condition is matched (default for arrays)
-      { resource: { not: [] } }
-      // matches if the condition is not matched
+      {
+        test: /\.css$/,
+        loader: ['style-loader', 'css-loader']
+      }
     ],
-    /* Advanced module configuration (click to show) */
   },
   resolve: {  
     // options for resolving module requests
@@ -77,17 +69,7 @@ module.exports = {
     extensions: [".js", ".json", ".jsx", ".css"],
     // extensions that are used
     alias: {
-      // a list of module name aliases
-      "module": "new-module",
-      // alias "module" -> "new-module" and "module/path/file" -> "new-module/path/file"
-      "only-module$": "new-module",
-      // alias "only-module" -> "new-module", but not "only-module/path/file" -> "new-module/path/file"
-      "module": path.resolve(__dirname, "app/third/module.js"),
-      // alias "module" -> "./app/third/module.js" and "module/file" results in error
-      // modules aliases are imported relative to the current context
     },
-    /* Alternative alias syntax (click to show) */
-    /* Advanced resolve configuration (click to show) */
   },
   performance: {
     hints: "warning", // enum
@@ -98,7 +80,7 @@ module.exports = {
       return assetFilename.endsWith('.css') || assetFilename.endsWith('.js');
     }
   },
-  devtool: "source-map", // enum
+  devtool: "inline-source-map", // enum
   // enhance debugging by adding meta info for the browser devtools
   // source-map most detailed at the expense of build speed.
   context: __dirname, // string (absolute path!)
