@@ -5,11 +5,13 @@
   "scripts": {
     "build": "npx babel-node buildScripts/srcServer.js",
     "prestart": "node buildScripts/startMessage.js",
-    "start": "npm run build &&  open:src lint:watch",
+    "start": "npm-run-all --parallel security-check open:src lint:watch test:watch",
     "open:src": "npx babel-node buildScripts/srcServer.js",
+    "security-check": "npm audit",
     "lint": "esw webpack.config.* src buildScripts --color",
     "lint:watch": "npm run lint -- --watch",
-    "test": "mocha --reporter progress buildScripts/testSetup.js \"src/**/*.test.js\""
+    "test": "mocha --reporter progress buildScripts/testSetup.js \"src/**/*.test.js\"",
+    "test:watch": "npm run test -- --watch"
   },
   "author": "David Feher",
   "license": "MIT",
