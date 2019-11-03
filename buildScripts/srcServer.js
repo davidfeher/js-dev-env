@@ -22,5 +22,5 @@ app.listen(port, function(err) {
     } else {
         open('http://localhost:3000');    
     }
-    console.log(`Example app listening on port port!`);
+    console.log(`Example app listening on port ${port}!`);
 }); 
