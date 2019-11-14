@@ -1,4 +1,5 @@
 const path = require('path');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
@@ -16,6 +17,9 @@ module.exports = {
     filename: "bundle.js", // string
     // the filename template for entry chunks
     publicPath: "/"
+  },
+  optimizations: {
+    minimizer: [new UglifyJsPlugin()]
   },
   module: {
     // configuration regarding modules
@@ -39,6 +43,7 @@ module.exports = {
         options: {
           presets: ["@babel/preset-env"]
         },
+        
         // options for the loader
       },
       {
@@ -63,7 +68,6 @@ module.exports = {
           {
             loader: MiniCssExtractPlugin.loader,
             options: {
-              hmr: process.env.NODE_ENV === 'development',
             },
           },
           'css-loader',
@@ -73,6 +77,7 @@ module.exports = {
       },
     ],
   },
+  
   resolve: {  
     // options for resolving module requests
     // (does not apply to resolving to loaders)
@@ -95,7 +100,7 @@ module.exports = {
       return assetFilename.endsWith('.css') || assetFilename.endsWith('.js');
     }
   },
-  devtool: "inline-source-map", // enum
+  devtool: "source-map", // enum
   // enhance debugging by adding meta info for the browser devtools
   // source-map most detailed at the expense of build speed.
   context: __dirname, // string (absolute path!)
