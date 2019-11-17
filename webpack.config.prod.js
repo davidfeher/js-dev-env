@@ -1,11 +1,15 @@
 const path = require('path');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   mode: "development", // "production" | "development" | "none"
   // Chosen mode tells webpack to use its built-in optimizations accordingly.
-  entry: path.resolve(__dirname, 'src/index'), // string | object | array
+  entry: {
+    vendor: path.resolve(__dirname, 'src/vendor'),
+    main: path.resolve(__dirname, 'src/index')
+  },
   // defaults to ./src
   // Here the application starts executing
   // and webpack starts bundling
@@ -19,7 +23,20 @@ module.exports = {
     publicPath: "/"
   },
   optimizations: {
-    minimizer: [new UglifyJsPlugin()]
+    minimizer: [new UglifyJsPlugin()],
+    splitChunks: {
+      cacheGroups: {
+          default: false,
+          vendors: false,
+          // vendor chunk
+          vendor: {
+              // sync + async chunks
+              chunks: 'all',
+              // import file path containing node_modules
+              test: /node_modules/
+            }
+        }
+    }
   },
   module: {
     // configuration regarding modules
@@ -47,18 +64,6 @@ module.exports = {
         // options for the loader
       },
       {
-        test: /\.html$/,
-        use: [
-          // apply multiple loaders and options
-          "htmllint-loader",
-          {
-            loader: "html-loader",
-            options: {
-            }
-          }
-        ]
-      },
-      {
         test: /\.css$/,
         loader: ['style-loader', 'css-loader']
       },
@@ -77,7 +82,25 @@ module.exports = {
       },
     ],
   },
-  
+  plugins: [
+    // Create HTML file that includes reference to bundled JS
+    new HtmlWebpackPlugin({
+      template: 'src/index.html',
+      inject: true,
+      minify: {
+        removeComments: true,
+        collapseWhitespace: true,
+        removeRedundantAttributes: true,
+        useShortDoctype:true,
+        removeEmptyAttributes: true,
+        removeStyleLinkTypeAttributes: true,
+        keepClosingSlash: true,
+        minifyJS: true,
+        minifeCSS: true,
+        minifyURLS: true
+      }
+    }),
+  ],
   resolve: {  
     // options for resolving module requests
     // (does not apply to resolving to loaders)

@@ -4,6 +4,7 @@ export default function getBaseUrl() {
 
 function getQueryStringParameterByName(name, url) {
     if (!url) url = window.location.href;
+    // eslint-disable-next-line no-useless-escape
     name = name.replace(/[\[\]]/g, "\\$&");
     var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
         results = regex.exec(url);
